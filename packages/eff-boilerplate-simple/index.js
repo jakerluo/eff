@@ -1,18 +1,18 @@
-"use strict";
+'use strict';
 
 module.exports = {
   name: {
-    desc: "project name",
+    desc: 'project name',
   },
   description: {
-    desc: "project description",
+    desc: 'project description',
   },
   author: {
-    desc: "project author",
+    desc: 'project author',
   },
   keys: {
-    desc: "cookie security keys",
-    default: Date.now() + "_" + random(100, 10000),
+    desc: 'cookie security keys',
+    default: Date.now() + '_' + random(100, 10000),
   },
 };
 

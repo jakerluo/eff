@@ -1,5 +1,5 @@
 #!/usr/bin/env node
 
-"use strict";
+'use strict';
 
-require("eff-init/bin/eff-init");
+require('eff-init/bin/eff-init');

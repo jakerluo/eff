@@ -4,12 +4,18 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "create-eff a"
+    "start": "create-eff a",
+    "lint": "eslint . --fix"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "create-eff": "workspace:^0.1.2"
+  },
+  "devDependencies": {
+    "eslint": "^8.15.0",
+    "eslint-config-egg": "^11.1.0",
+    "prettier": "^2.6.2"
   }
 }

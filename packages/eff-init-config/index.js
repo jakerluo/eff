@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
-console.error("should not require egg-init-config");
+console.error('should not require egg-init-config');
 process.exit(1);
