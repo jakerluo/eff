@@ -1,1 +1,3 @@
-# eff
+# easydo
+
+- [ ] core support build

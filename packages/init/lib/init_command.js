@@ -77,9 +77,7 @@ module.exports = class Command {
           boilerplate = await this.askForBoilerplateType(boilerplateMapping);
           if (!boilerplate) return;
         }
-        this.log(
-          `use boilerplate: ${boilerplate.name}(${boilerplate.package})`
-        );
+        this.log(`use boilerplate: ${boilerplate.name}(${boilerplate.package})`);
         pkgName = boilerplate.package;
       }
       templateDir = await this.downloadBoilerplate(pkgName);
@@ -100,15 +98,11 @@ module.exports = class Command {
       onlyFiles: false,
       followSymlinkedDirectories: false,
     });
-    files.forEach(file => {
+    files.forEach((file) => {
       const { dir: dirname, base: basename } = path.parse(file);
       const from = path.join(src, file);
       const fileName = this.fileMapping[basename] || basename;
-      const to = path.join(
-        targetDir,
-        dirname,
-        this.replaceTemplate(fileName, locals)
-      );
+      const to = path.join(targetDir, dirname, this.replaceTemplate(fileName, locals));
       const stats = fs.lstatSync(from);
       if (stats.isSymbolicLink()) {
         const target = fs.readFileSync(from);
@@ -132,14 +126,12 @@ module.exports = class Command {
   }
 
   replaceTemplate(content, scope) {
-    return content
-      .toString()
-      .replace(/(\\)?{{ *(\w+) *}}/g, (block, skip, key) => {
-        if (skip) {
-          return block.subString(skip.length);
-        }
-        return scope.hasOwnProperty(key) ? scope[key] : block;
-      });
+    return content.toString().replace(/(\\)?{{ *(\w+) *}}/g, (block, skip, key) => {
+      if (skip) {
+        return block.subString(skip.length);
+      }
+      return scope.hasOwnProperty(key) ? scope[key] : block;
+    });
   }
 
   async askForVariable(targetDir, templateDir) {
@@ -156,11 +148,7 @@ module.exports = class Command {
       }
     } catch (error) {
       if (error.code !== 'MODULE_NOT_FOUND') {
-        this.log(
-          chalk.yellow(
-            `load boilerplate config got trouble, skip and use defaults, ${error.message}`
-          )
-        );
+        this.log(chalk.yellow(`load boilerplate config got trouble, skip and use defaults, ${error.message}`));
       }
       return {};
     }
@@ -186,7 +174,7 @@ module.exports = class Command {
       return result;
     }
     return inquirer.prompt(
-      keys.map(key => {
+      keys.map((key) => {
         const question = questions[key];
         return {
           type: question.type || 'input',
@@ -239,7 +227,7 @@ module.exports = class Command {
       group = groupMapping[groupNames[0]];
     }
 
-    const choices = Object.keys(group).map(key => {
+    const choices = Object.keys(group).map((key) => {
       const item = group[key];
       return {
         name: `${key} (${item.description})`,
@@ -312,7 +300,7 @@ module.exports = class Command {
   async fetchBoilerplateMapping(pkgName) {
     const pkgInfo = await this.getPackageInfo(pkgName || this.configName, true);
     const mapping = pkgInfo.config.boilerplate;
-    Object.keys(mapping).forEach(key => {
+    Object.keys(mapping).forEach((key) => {
       const item = mapping[key];
       item.name = item.name || key;
       item.from = pkgInfo;
@@ -334,10 +322,7 @@ module.exports = class Command {
         maxRedirects: 5,
         timeout: 5000,
       });
-      assert(
-        result.status === 200,
-        `fetch ${pkgName} info error: ${result.status}, ${result.data.reason}`
-      );
+      assert(result.status === 200, `fetch ${pkgName} info error: ${result.status}, ${result.data.reason}`);
       return result.data;
     } catch (err) {
       if (withFallback) {
@@ -369,7 +354,7 @@ module.exports = class Command {
     let targetDir = path.resolve(this.cwd, dir);
     const force = this.argv.force;
 
-    const validate = dir => {
+    const validate = (dir) => {
       // create dir if not exist
       if (!fs.existsSync(dir)) {
         mkdirp.sync(dir);
@@ -382,19 +367,13 @@ module.exports = class Command {
       }
 
       // check if directory empty
-      const files = fs.readdirSync(dir).filter(name => name[0] !== '.');
+      const files = fs.readdirSync(dir).filter((name) => name[0] !== '.');
       if (files.length > 0) {
         if (force) {
-          this.log(
-            chalk.red(
-              `${dir} already exists and will be override due to --force`
-            )
-          );
+          this.log(chalk.red(`${dir} already exists and will be override due to --force`));
           return true;
         }
-        return chalk.red(
-          `${dir} already exists and not empty: ${JSON.stringify(files)}`
-        );
+        return chalk.red(`${dir} already exists and not empty: ${JSON.stringify(files)}`);
       }
       return true;
     };
@@ -406,7 +385,7 @@ module.exports = class Command {
         name: 'dir',
         message: 'Please enter target dir: ',
         default: dir || '.',
-        filter: dir => path.resolve(this.cwd, dir),
+        filter: (dir) => path.resolve(this.cwd, dir),
         validate,
       });
       targetDir = answer.dir;
@@ -435,14 +414,8 @@ module.exports = class Command {
         }
         // support .npmrc
         const home = homedir();
-        let url =
-          process.env.npm_registry ||
-          process.env.npm_config_registry ||
-          'https://registry.npmjs.org';
-        if (
-          fs.existsSync(path.join(home, '.cnpmrc')) ||
-          fs.existsSync(path.join(home, '.tnpmrc'))
-        ) {
+        let url = process.env.npm_registry || process.env.npm_config_registry || 'https://registry.npmjs.org';
+        if (fs.existsSync(path.join(home, '.cnpmrc')) || fs.existsSync(path.join(home, '.tnpmrc'))) {
           url = 'https://registry.npmmirror.com';
         }
         url = url.replace(/\/$/, '');
@@ -453,9 +426,7 @@ module.exports = class Command {
 
   getParser() {
     return yargs
-      .usage(
-        'init eff project from boilerplate. \n Usage: $0 [dir] --type=simple'
-      )
+      .usage('init eff project from boilerplate. \n Usage: $0 [dir] --type=simple')
       .options(this.getParserOptions())
       .alias('h', 'help')
       .version()
@@ -487,8 +458,7 @@ module.exports = class Command {
       },
       registry: {
         type: 'string',
-        description:
-          'npm registry, support china/npm/custom, default to auto detect',
+        description: 'npm registry, support china/npm/custom, default to auto detect',
         alias: 'r',
       },
       silent: {

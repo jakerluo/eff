@@ -1,11 +1,11 @@
 {
-  "name": "eff",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "easydo",
+  "version": "0.1.0",
+  "description": "easydo everything",
   "scripts": {
     "start": "create-eff a",
-    "lint": "eslint . --fix"
+    "lint": "eslint . --fix",
+    "format": "prettier --write ."
   },
   "keywords": [],
   "author": "",

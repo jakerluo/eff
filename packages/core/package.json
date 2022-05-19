@@ -1,5 +1,5 @@
 {
-  "name": "eff-bin",
+  "name": "@easydo/core",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -7,6 +7,6 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
+  "author": "jakerluo",
   "license": "ISC"
 }
