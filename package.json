@@ -1,0 +1,15 @@
+{
+  "name": "eff",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "create-eff a"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "create-eff": "workspace:^0.1.2"
+  }
+}
