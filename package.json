@@ -6,7 +6,8 @@
     "create": "create-iedo a",
     "lint": "eslint . --fix",
     "format": "prettier --write .",
-    "test:bin": "iedo-bin dev",
+    "bin:dev": "iedo-bin dev",
+    "bin:pkgfiles": "iedo-bin pkgfiles",
     "build": "ts-node scripts/build.ts",
     "start": "ts-node scripts/build.ts --watch"
   },
@@ -29,5 +30,6 @@
     "rollup": "^2.74.0",
     "tslib": "^2.4.0",
     "typescript": "^4.6.4"
-  }
+  },
+  "files": []
 }
