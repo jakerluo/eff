@@ -1,12 +1,25 @@
 {
-  "name": "eff-bin",
-  "version": "1.0.0",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "name": "@iedo/bin",
+  "version": "0.1.0",
+  "main": "dist/index.js",
+  "bin": {
+    "iedo-bin": "./bin/iedo-bin"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "@iedo/utils": "workspace:^0.1.0",
+    "@types/debug": "^4.1.7",
+    "@types/detect-port": "^1.3.2",
+    "common-bin": "^2.9.2",
+    "debug": "^4.3.4",
+    "detect-port": "^1.3.0",
+    "ts-node": "^10.7.0"
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.34",
+    "typescript": "^4.6.4"
+  }
 }

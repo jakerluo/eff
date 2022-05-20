@@ -1,3 +1,3 @@
-# easydo
+# iedo
 
 - [ ] core support build

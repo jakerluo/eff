@@ -1,9 +1,9 @@
 {
-  "name": "create-eff",
+  "name": "create-iedo",
   "version": "0.1.2",
   "description": "",
   "main": "index.js",
-  "bin": "./bin/create-eff.js",
+  "bin": "./bin/create-iedo.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -14,6 +14,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "eff-init": "^0.1.0"
+    "iedo-init": "^0.1.0"
   }
 }

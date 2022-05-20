@@ -21,8 +21,8 @@ const isTextOrBinary = require('istextorbinary');
 module.exports = class Command {
   constructor(options) {
     options = options || {};
-    this.name = options.name || 'eff-init';
-    this.configName = options.configName || 'eff-init-config';
+    this.name = options.name || 'iedo-init';
+    this.configName = options.configName || 'iedo-init-config';
     this.pkgInfo = options.pkgInfo || require('../package.json');
     this.needUpdate = options.needUpdate !== false;
     this.httpClient = urllib.create();
@@ -90,7 +90,6 @@ module.exports = class Command {
 
   async processFiles(targetDir, templateDir) {
     const src = path.join(templateDir, 'boilerplate');
-    console.log('src: ', src);
     const locals = await this.askForVariable(targetDir, templateDir);
     const files = glob.sync('**/*', {
       cwd: src,
@@ -139,12 +138,12 @@ module.exports = class Command {
 
     try {
       questions = require(templateDir);
-      console.log('questions: ', questions);
+
       if (is.function(questions)) {
         questions = questions(targetDir);
       }
       if (questions.name && !questions.name.default) {
-        questions.name.default = path.basename(targetDir).replace(/^eff-/, '');
+        questions.name.default = path.basename(targetDir).replace(/^iedo-/, '');
       }
     } catch (error) {
       if (error.code !== 'MODULE_NOT_FOUND') {
@@ -221,7 +220,7 @@ module.exports = class Command {
         choices: groupNames,
         pageSize: groupNames.length,
       });
-      console.log('answer: ', answer);
+
       group = groupMapping[answer.group];
     } else {
       group = groupMapping[groupNames[0]];
@@ -267,7 +266,6 @@ module.exports = class Command {
       return boilerplateInfo;
     }
     console.log(`Exit due to: ${boilerplateInfo.deprecate}`);
-    return;
   }
 
   groupBy(obj, key, otherKey) {
@@ -426,7 +424,7 @@ module.exports = class Command {
 
   getParser() {
     return yargs
-      .usage('init eff project from boilerplate. \n Usage: $0 [dir] --type=simple')
+      .usage('init iedo project from boilerplate. \n Usage: $0 [dir] --type=simple')
       .options(this.getParserOptions())
       .alias('h', 'help')
       .version()

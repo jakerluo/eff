@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "moduleResolution": "node",
+    "strict": true,
+    "noImplicitOverride": true,
+    "noUnusedLocals": true,
+    "allowSyntheticDefaultImports": true,
+    "useUnknownInCatchVariables": false,
+    "target": "ES2017",
+    "declaration": true
+  }
+}

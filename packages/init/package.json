@@ -1,5 +1,5 @@
 {
-  "name": "eff-init",
+  "name": "iedo-init",
   "version": "0.1.0",
   "description": "",
   "main": "lib/init_command.js",
@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "bin": {
-    "eff-init": "./bin/eff-init.js"
+    "iedo-init": "./bin/iedo-init.js"
   },
   "author": "",
   "license": "ISC",

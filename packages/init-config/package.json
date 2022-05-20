@@ -1,5 +1,5 @@
 {
-  "name": "eff-init-config",
+  "name": "iedo-init-config",
   "version": "0.1.2",
   "description": "",
   "files": [
@@ -8,8 +8,8 @@
   "config": {
     "boilerplate": {
       "simple": {
-        "package": "eff-boilerplate-simple",
-        "description": "Simple eff app boilerplate"
+        "package": "iedo-boilerplate-simple",
+        "description": "Simple iedo app boilerplate"
       }
     }
   },

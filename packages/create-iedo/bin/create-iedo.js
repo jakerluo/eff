@@ -2,4 +2,4 @@
 
 'use strict';
 
-require('eff-init/bin/eff-init');
+require('iedo-init/bin/iedo-init');
