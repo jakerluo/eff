@@ -9,6 +9,5 @@
     "target": "ES2020",
     "declaration": true,
     "esModuleInterop": true
-  },
-  "include": ["types/*.d.ts", "src/**/*.ts"]
+  }
 }

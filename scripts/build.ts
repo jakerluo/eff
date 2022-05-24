@@ -1,5 +1,5 @@
 import { join } from 'path';
-import * as rimraf from 'rimraf';
+import rimraf from 'rimraf';
 import { rollup, watch as rollupWatch, OutputOptions, RollupOptions, RollupWatchOptions, ChangeEvent } from 'rollup';
 
 interface TaskOptions {
@@ -15,6 +15,9 @@ if (args.includes('--watch')) {
 
 const config: TaskOptions[] = [
   {
+    packageName: 'logger',
+  },
+  {
     packageName: 'utils',
   },
   {
@@ -22,6 +25,9 @@ const config: TaskOptions[] = [
   },
   {
     packageName: 'iedo',
+  },
+  {
+    packageName: 'core',
   },
 ];
 
@@ -52,9 +58,9 @@ async function task(taskOptions: TaskOptions) {
     external: [...Object.keys(getPackageInfo().dependencies || {}), 'fs', 'path', 'os', 'assert'],
     plugins: [
       require('@rollup/plugin-typescript')({
-        tsconfig: join(process.cwd(), 'tsconfig.json'),
+        tsconfig: join(process.cwd(), 'tsconfig.base.json'),
         filterRoot: getPackageDir(),
-        compilerOptions: { declaration: true, outDir: getPackageDist() },
+        compilerOptions: { declaration: true, outDir: getPackageDist(), rootDir: getPackageDir() },
       }),
     ],
   };
@@ -133,7 +139,7 @@ async function task(taskOptions: TaskOptions) {
 
 function removeDist(dir: string) {
   return new Promise<void>((resolve, reject) => {
-    rimraf(dir, (err) => {
+    rimraf(dir, (err: Error | undefined | null) => {
       if (err) {
         console.log(`rimraf ${dir} err: `, err);
         reject(err);
