@@ -15,11 +15,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "create-iedo": "workspace:^0.1.2",
+    "create-iedo": "workspace:^0.0.0",
     "iedo": "workspace:^0.1.0"
   },
   "devDependencies": {
-    "@iedo/bin": "workspace:^0.1.0",
+    "@iedo/bin": "workspace:^0.0.0",
     "@rollup/plugin-typescript": "^8.3.2",
     "@types/node": "^17.0.34",
     "@types/rimraf": "^3.0.2",

@@ -1,10 +1,14 @@
 {
   "name": "iedo",
-  "version": "0.1.0",
+  "version": "0.0.0",
   "description": "",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "@iedo/cluster": "workspace:^0.0.0",
+    "@iedo/core": "workspace:^0.0.0"
+  }
 }

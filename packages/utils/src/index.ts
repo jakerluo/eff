@@ -20,7 +20,7 @@ export interface FrameworkPathOptions {
   env?: string;
 }
 
-export function getFrameworkOrEasydoPath(cwd: string, iedoNames: string[]) {
+export function getFrameworkOrIedoPath(cwd: string, iedoNames: string[]) {
   iedoNames = iedoNames || ['iedo'];
   const moduleDir = join(cwd, 'node_modules');
   if (!existsSync(moduleDir)) {
@@ -127,9 +127,9 @@ function getLoader({ baseDir, framework, env }: FrameworkPathOptions) {
     writeFileSync(join(baseDir, 'package.json'), JSON.stringify({ name: 'tmpapp' }));
   }
 
-  const iedoLoader = findEasyDoCore({ baseDir, framework }).EasydoLoader;
+  const iedoLoader = findIedoCore({ baseDir, framework }).IedoLoader;
   const { Application } = require(framework);
-  if (env) process.env.EASYDO_SERVER_ENV = env;
+  if (env) process.env.IEDO_SERVER_ENV = env;
   return new iedoLoader({
     baseDir,
     logger,
@@ -137,7 +137,7 @@ function getLoader({ baseDir, framework, env }: FrameworkPathOptions) {
   });
 }
 
-function findEasyDoCore({ baseDir, framework }: FrameworkPathOptions) {
+function findIedoCore({ baseDir, framework }: FrameworkPathOptions) {
   try {
     const name = 'iedo-core';
     return require(name);

@@ -1,3 +1,5 @@
-import IedoCore from './iedo';
+import IedoCore, { IedoCoreOptions } from './iedo';
 
 export { IedoCore };
+
+export type { IedoCoreOptions };

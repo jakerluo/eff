@@ -6,13 +6,19 @@ import * as utils from './utils';
 import { ConsoleTransport, ConsoleTransportType } from '@iedo/logger';
 import BaseContextClass from './utils/base_context_class';
 import Lifecycle from './lifecycle';
+import type { IedoLoaderOptions } from './loader/iedo_loader';
+import IedoLoader from './loader/iedo_loader';
 
 export interface IedoCoreOptions {
   baseDir?: string;
   type?: 'application' | 'agent';
+  plugins?: IedoLoaderOptions['plugins'];
+  serverScope?: IedoLoaderOptions['serverScope'];
+  env?: IedoLoaderOptions['env'];
 }
 
 const DEPRECATE = Symbol('EggCore#deprecate');
+const EGG_LOADER = Symbol.for('egg#loader');
 
 export default class IedoCore extends KoaApplication {
   timing: Timing;
@@ -23,7 +29,8 @@ export default class IedoCore extends KoaApplication {
   BaseContextClass: typeof BaseContextClass;
   Controller: typeof BaseContextClass;
   Service: typeof BaseContextClass;
-  lifycycle: Lifecycle;
+  lifecycle: Lifecycle;
+  loader: IedoLoader;
 
   constructor(options: IedoCoreOptions) {
     options.baseDir = options.baseDir || process.cwd();
@@ -52,19 +59,29 @@ export default class IedoCore extends KoaApplication {
     const Service = this.BaseContextClass;
 
     this.Service = Service;
-    this.lifycycle = new Lifecycle({
+    this.lifecycle = new Lifecycle({
       baseDir: options.baseDir,
       app: this,
       logger: this.console,
     });
 
-    this.lifycycle.on('error', (err: Error) => this.emit('error', err));
-    this.lifycycle.on('ready_timeout', (id: string) => this.emit('ready_timeout', id));
-    this.lifycycle.on('ready_stat', (data) => this.emit('ready_stat', data));
+    this.lifecycle.on('error', (err: Error) => this.emit('error', err));
+    this.lifecycle.on('ready_timeout', (id: string) => this.emit('ready_timeout', id));
+    this.lifecycle.on('ready_stat', (data) => this.emit('ready_stat', data));
+
+    const Loader = this[EGG_LOADER];
+    this.loader = new Loader({
+      baseDir: options.baseDir,
+      app: this,
+      plugins: options.plugins,
+      logger: this.console,
+      serverScope: options.serverScope,
+      env: options.env,
+    });
   }
 
   ready(flagOrFunction: boolean | Error | ((err: Error) => void)) {
-    this.lifycycle.ready(flagOrFunction);
+    this.lifecycle.ready(flagOrFunction);
   }
 
   get deprecate() {
@@ -75,5 +92,9 @@ export default class IedoCore extends KoaApplication {
       this[DEPRECATE].set(caller, deprecate);
     }
     return this[DEPRECATE].get(caller);
+  }
+
+  get [EGG_LOADER]() {
+    return IedoLoader;
   }
 }

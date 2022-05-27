@@ -4,7 +4,7 @@ import TestCommand$0 from './lib/cmd/test';
 import DevCommand$0 from './lib/cmd/dev';
 import PkgFilesCommand$0 from './lib/cmd/pkgfiles';
 
-export default class EasyDoBin extends Command$0 {
+export default class IedoBin extends Command$0 {
   constructor(rawArgv: string[]) {
     super(rawArgv);
     this.usage = 'Usage: iedo [command] [options]';
@@ -13,7 +13,7 @@ export default class EasyDoBin extends Command$0 {
   }
 }
 
-module.exports = exports = EasyDoBin;
+module.exports = exports = IedoBin;
 
 export const Command = Command$0;
 export const DevCommand = DevCommand$0;

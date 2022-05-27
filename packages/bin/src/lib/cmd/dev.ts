@@ -69,7 +69,7 @@ export default class DevCommand extends Command {
 
     const env = {
       NODE_ENV: 'development',
-      EASYDO_MASTER_CLOSE_TIMEOUT: 1000,
+      IEDO_MASTER_CLOSE_TIMEOUT: 1000,
     };
 
     const options = {

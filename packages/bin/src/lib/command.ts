@@ -87,7 +87,7 @@ export default class Command extends BaseCommand {
       execArgvObj.require.push(argv.tscompiler);
 
       // tell egg loader to load ts file
-      env.EASYDO_TYPESCRIPT = 'true';
+      env.IEDO_TYPESCRIPT = 'true';
 
       // load file from tsconfig on startup
       env.TS_NODE_FILES = process.env.TS_NODE_FILES || 'true';

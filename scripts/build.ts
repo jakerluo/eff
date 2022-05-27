@@ -21,6 +21,9 @@ const config: TaskOptions[] = [
     packageName: 'utils',
   },
   {
+    packageName: 'cluster',
+  },
+  {
     packageName: 'bin',
   },
   {
@@ -35,7 +38,18 @@ runTasks(config);
 
 async function runTasks(configs: TaskOptions[]) {
   try {
-    await configs.reduce((prev, curr) => prev.then(() => task(curr)), Promise.resolve());
+    await configs.reduce(
+      (prev, curr) =>
+        prev.then(
+          () => {
+            task(curr);
+          },
+          () => {
+            return Promise.resolve();
+          }
+        ),
+      Promise.resolve()
+    );
   } catch (error) {
     console.log('error: ', error);
   }

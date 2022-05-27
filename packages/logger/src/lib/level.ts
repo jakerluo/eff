@@ -1,7 +1,6 @@
-export type Level = 'ALL' | 'DEBUG' | 'INFO' | 'WARN' | 'ERROR' | 'NONE';
 export type LevelValue = number;
 
-const levels: Record<Level, number> = {
+const levels = {
   ALL: -Infinity,
   DEBUG: 0,
   INFO: 1,
@@ -9,5 +8,7 @@ const levels: Record<Level, number> = {
   ERROR: 3,
   NONE: Infinity,
 };
+
+export type Level = keyof typeof levels;
 
 export default levels;

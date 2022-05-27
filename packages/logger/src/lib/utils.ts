@@ -5,7 +5,7 @@ import util from 'util';
 import chalk from 'chalk';
 import * as utility from 'utility';
 import * as iconv from 'iconv-lite';
-import { Level, LevelValue } from './level';
+import levels, { Level } from './level';
 import { TransportOptions } from './transports/transports';
 
 const duartionRegexp = /([0-9]+ms)/g;
@@ -30,17 +30,17 @@ export function assign(target: any, ...sources: Array<Record<string, any>>) {
   return target;
 }
 
-export function normalizeLevel(level?: Level): Level | LevelValue {
-  // 'WARN' => level.warn
-  if (typeof level === 'string' && level) {
-    return (level as string).toUpperCase() as Level;
-  }
-
+export function normalizeLevel(level?: Level): number {
   if (typeof level === 'number') {
     return level;
   }
 
-  return 'NONE';
+  // 'WARN' => level.warn
+  if (typeof level === 'string' && level) {
+    return levels[level.toUpperCase()];
+  }
+
+  return levels.INFO;
 }
 
 export interface FormatMeta {

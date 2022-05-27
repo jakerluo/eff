@@ -70,7 +70,7 @@ export default class Transport {
       return false;
     }
 
-    return level >= (this.options.level || levels.NONE);
+    return this.options.level <= levels[level];
   }
 
   log(level: Level, args: string[], meta: FormatMeta): string | Buffer | void {
