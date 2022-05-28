@@ -1,4 +1,4 @@
-import { LevelValue } from './../level';
+import { LevelValue } from '../level';
 import { assign, format, normalizeLevel, FormatMeta } from '../utils';
 import { EOL } from 'os';
 import levels from '../level';
@@ -70,7 +70,11 @@ export default class Transport {
       return false;
     }
 
-    return this.options.level <= levels[level];
+    if (this.options.level) {
+      return this.options.level <= levels[level];
+    }
+
+    return true;
   }
 
   log(level: Level, args: string[], meta: FormatMeta): string | Buffer | void {

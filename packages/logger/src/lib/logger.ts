@@ -1,4 +1,3 @@
-import levels from './level';
 import { TransportOptions } from './transports/transports';
 import { assign, FormatMeta } from './utils';
 

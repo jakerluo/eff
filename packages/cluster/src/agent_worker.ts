@@ -1,6 +1,6 @@
 const options = JSON.parse(process.argv[2]);
 if (options.require) {
-  options.require.forEach((mod) => {
+  options.require.forEach((mod: string) => {
     require(mod);
   });
 }
@@ -14,7 +14,12 @@ const consoleLogger = new ConsoleLogger({ level: process.env.IEDO_AGENT_WORKER_L
 
 const Agent = require(options.framework).Agent;
 debug('new Agent with options %j', options);
-let agent;
+let agent: {
+  ready: (arg0: (err: any) => void) => void;
+  removeListener: (arg0: string, arg1: (err: any) => void) => void;
+  on: (arg0: string, arg1: (err: any) => void) => void;
+  close: () => any;
+};
 
 try {
   agent = new Agent(options);
@@ -23,7 +28,7 @@ try {
   throw new Error(err);
 }
 
-function startErrorHandler(err) {
+function startErrorHandler(err: Error) {
   consoleLogger.error(err);
   consoleLogger.error('[agent_worker] start error, exiting with code:1');
   process.exitCode = 1;
@@ -34,7 +39,9 @@ agent.ready((err) => {
   if (err) return;
 
   agent.removeListener('error', startErrorHandler);
-  process.send({ action: 'agent-start', to: 'master' });
+  if (process.send) {
+    process.send({ action: 'agent-start', to: 'master' } as any);
+  }
 });
 
 agent.on('error', startErrorHandler);

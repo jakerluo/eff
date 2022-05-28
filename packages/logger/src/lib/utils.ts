@@ -8,8 +8,8 @@ import * as iconv from 'iconv-lite';
 import levels, { Level } from './level';
 import { TransportOptions } from './transports/transports';
 
-const duartionRegexp = /([0-9]+ms)/g;
-const categoryRegexp = /(\[[\w\-_.:]+\])/g;
+const durationRegexp = /([0-9]+ms)/g;
+const categoryRegexp = /(\[[\w\-_.:]+])/g;
 const httpMethodRegexp = /(GET|POST|PUT|PATH|HEAD|DELETE) /g;
 
 // Like `Object.assign`, but don't copy `undefined` value
@@ -37,7 +37,7 @@ export function normalizeLevel(level?: Level): number {
 
   // 'WARN' => level.warn
   if (typeof level === 'string' && level) {
-    return levels[level.toUpperCase()];
+    return levels[level.toUpperCase() as Level];
   }
 
   return levels.INFO;
@@ -115,7 +115,7 @@ export function consoleFormatter(meta: FormatMeta) {
     return chalk.yellow(msg);
   }
 
-  msg = msg.replace(duartionRegexp, chalk.green('$1'));
+  msg = msg.replace(durationRegexp, chalk.green('$1'));
   msg = msg.replace(categoryRegexp, chalk.blue('$1'));
   msg = msg.replace(httpMethodRegexp, chalk.cyan('$1 '));
   return msg;

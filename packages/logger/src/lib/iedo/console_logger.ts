@@ -1,4 +1,4 @@
-import { Level } from './../level';
+import { Level } from '../level';
 import Logger from '../logger';
 import ConsoleTransport from '../transports/console';
 import type { TransportOptions } from '../transports/transports';

@@ -26,7 +26,7 @@ function prepareObjectStackTrace(obj: Error, stack: NodeJS.CallSite[]) {
   return stack;
 }
 
-export function getCalleeFromStack(withLine?: unknown[], stackIndex?: number) {
+export function getCalleeFromStack(withLine?: boolean, stackIndex?: number) {
   stackIndex = stackIndex === undefined ? 2 : stackIndex;
   const limit = Error.stackTraceLimit;
   const prep = Error.prepareStackTrace;
@@ -60,6 +60,7 @@ export function getCalleeFromStack(withLine?: unknown[], stackIndex?: number) {
   return `${fileName}:${callSite.getLineNumber()}:${callSite.getColumnNumber()}`;
 }
 
+// @ts-ignore
 export async function callFn(fn, args, ctx) {
   args = args || [];
   if (!is.function(fn)) return;

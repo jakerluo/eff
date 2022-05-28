@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "@iedo/logger": "workspace:^0.0.0",
+    "@types/co": "^4.6.3",
     "@types/debug": "^4.1.7",
     "@types/koa": "^2.13.4",
     "co": "^4.6.0",

@@ -5,5 +5,4 @@ export default class Agent extends IedoApplication {
     options.type = 'agent';
     super(options);
   }
-  ready() {}
 }

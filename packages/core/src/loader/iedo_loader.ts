@@ -28,6 +28,7 @@ export default class IedoLoader {
   eggPaths: string[];
   serverEnv: string;
   serverScope: string;
+  [REQUIRE_COUNT]: number;
   appInfo: {
     name: any;
     baseDir: string;
@@ -49,7 +50,7 @@ export default class IedoLoader {
     this.timing = this.app.timing || new Timing();
     this[REQUIRE_COUNT] = 0;
     this.pkg = utility.readJSONSync(join(this.options.baseDir, 'package.json'));
-    // this.eggPaths = this.getIedoPaths();
+    this.eggPaths = this.getIedoPaths();
     this.serverEnv = this.getServerEnv();
 
     this.appInfo = this.getAppInfo();
@@ -58,9 +59,9 @@ export default class IedoLoader {
 
   private getIedoPaths() {
     const IedoCore = require('../iedo');
-    const iedoPaths = [];
+    const iedoPaths: string[] = [];
 
-    let proto = this.app;
+    let proto: IedoCore = this.app;
 
     while (proto) {
       proto = Object.getPrototypeOf(proto);
@@ -71,6 +72,7 @@ export default class IedoLoader {
         proto.hasOwnProperty(Symbol.for('iedo#iedoPath')),
         "Symbol.for('iedo#iedoPath') is required on Application"
       );
+      // @ts-ignore
       const iedoPath = proto[Symbol.for('iedo#iedoPath')];
       assert(iedoPath && typeof iedoPath === 'string', "Symbol.for('egg#eggPath') should be string");
       assert(existsSync(iedoPath), `${iedoPath} not exists`);
@@ -116,6 +118,7 @@ export default class IedoLoader {
     const pkg = join(this.options.baseDir, 'package.json');
     throw new Error(`name is required from ${pkg}`);
   }
+
   private getAppInfo() {
     const env = this.serverEnv;
     const scope = this.serverScope;

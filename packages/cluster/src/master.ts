@@ -12,7 +12,7 @@ import utility from 'utility';
 import { EOL } from 'os';
 import { mkdirp } from 'mz-modules';
 import semver from 'semver';
-import { ChildProcess, fork, ForkOptions } from 'child_process';
+import { fork, ForkOptions } from 'child_process';
 
 interface HttpOptions {
   ca?: string;
@@ -59,8 +59,9 @@ const REAL_PORT = Symbol('Master#real_port');
 const APP_ADDRESS = Symbol('Master#appAddress');
 
 export default class Master extends EventEmitter {
-  agentStartTime: number;
+  agentStartTime: number | undefined;
   ready(callback: () => void) {
+    callback();
     throw new Error('Method not implemented.');
   }
   options: MasterOptions;
@@ -71,8 +72,10 @@ export default class Master extends EventEmitter {
   closed: boolean;
   isStarted: boolean;
   logger: ConsoleLoggerType;
-  logMethod: string;
+  logMethod: Lowercase<Level>;
   [REAL_PORT]: MasterOptions['port'];
+  [PROTOCOL]: string;
+  [APP_ADDRESS]: string;
   constructor(options: MasterOptions) {
     super();
     this.options = parseOptions(options);
@@ -174,20 +177,22 @@ export default class Master extends EventEmitter {
   }
 
   private async detectPorts() {
+    // @ts-ignore
     return GetFreePort()
       .then((port) => {
         console.log(port);
         this.options.clusterPort = port;
         if (this.options.sticky) {
+          // @ts-ignore
           return GetFreePort();
         }
       })
-      .then((port) => {
+      .then((port: number | undefined) => {
         if (this.options.sticky) {
           this.options.stickyWorkerPort = port;
         }
       })
-      .catch((err) => {
+      .catch((err: Error) => {
         this.logger.error(err);
         process.exit(1);
       });
@@ -203,6 +208,7 @@ export default class Master extends EventEmitter {
     if (process.platform === 'win32') opt.windowsHide = true;
 
     const debugPort = process.env.IEDO_AGENT_DEBUG_PORT || 5800;
+    console.log('debugPort', debugPort);
     if (this.options.isDebug) opt.execArgv = process.execArgv.concat([`--${semver.gte(process.version, '8.0.0')}`]);
     const agentWorker = fork(this.getAgentWorkerFile(), args, opt) as CustomChildProcess;
     agentWorker.status = 'starting';
@@ -224,8 +230,9 @@ export default class Master extends EventEmitter {
     return join(__dirname, 'agent_worker.js');
   }
 
-  private log(...args) {
-    this.logger[this.logMethod](...args);
+  private log(...args: (string | number | boolean | MasterOptions | undefined)[]) {
+    // @ts-ignore
+    this.logger[this.logMethod as Level](...args);
   }
 
   get agentWorker() {

@@ -8,9 +8,9 @@ export interface CustomChildProcess extends ChildProcess {
 
 export default class Manager extends EventEmitter {
   workers: Map<any, any>;
-  agent: CustomChildProcess;
-  exception: number;
-  timer: NodeJS.Timer;
+  agent: CustomChildProcess | null;
+  exception: number | undefined;
+  timer: NodeJS.Timer | undefined;
 
   constructor() {
     super();
@@ -26,15 +26,15 @@ export default class Manager extends EventEmitter {
     this.agent = null;
   }
 
-  setWorker(worker) {
+  setWorker(worker: { process: { id: any } }) {
     this.workers.set(worker.process.id, worker);
   }
 
-  getWorker(id) {
+  getWorker(id: any) {
     return this.workers.get(id);
   }
 
-  deleteWorker(id) {
+  deleteWorker(id: any) {
     this.workers.delete(id);
   }
 
@@ -67,6 +67,9 @@ export default class Manager extends EventEmitter {
       if (count.agent && count.worker) {
         this.exception = 0;
         return;
+      }
+      if (!this.exception) {
+        this.exception = 0;
       }
       this.exception += 1;
       if (this.exception >= 3) {

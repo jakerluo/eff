@@ -1,10 +1,10 @@
-import { ConsoleTransportType } from '@iedo/logger';
+import { ConsoleLoggerType } from '@iedo/logger';
 import assert from 'assert';
 import EventEmitter from 'events';
 import getReady from 'get-ready';
 import { Ready } from 'ready-callback';
-import IedoCore from './iedo';
 import debug$0 from 'debug';
+import { getCalleeFromStack } from './utils';
 
 const debug = debug$0('iedo-core:lifecycle');
 
@@ -19,8 +19,8 @@ const BOOTS = Symbol('Lifecycle#boots');
 
 export interface LifecycleOptions {
   baseDir: string;
-  app: IedoCore;
-  logger: ConsoleTransportType;
+  app: any;
+  logger: ConsoleLoggerType;
 }
 
 interface Boot {
@@ -38,7 +38,7 @@ export default class Lifecycle extends EventEmitter {
   [INIT]: boolean;
   readyTimeout: number;
   loadReady: any;
-  bootReady: Ready;
+  bootReady: Ready | null = null;
 
   constructor(options: LifecycleOptions) {
     super();
@@ -103,7 +103,7 @@ export default class Lifecycle extends EventEmitter {
       if (err) {
         this.ready(err);
       } else {
-        this.triggerWillReady();
+        this.triggerWillReady().then();
       }
     });
 
@@ -121,9 +121,26 @@ export default class Lifecycle extends EventEmitter {
     ready.on('error', (err: Error) => this.emit('error', err));
   }
 
+  [REGISTER_READY_CALLBACK]({
+    scope,
+    scopeFullName,
+  }: {
+    scope: () => void;
+    ready: Ready | null;
+    scopeFullName: string;
+    timingKeyPrefix: string;
+  }) {
+    if (!(typeof scope === 'function')) {
+      throw new Error('boot only support function');
+    }
+    const name = scopeFullName || getCalleeFromStack(true, 4);
+    console.log(name);
+    // const timingkey = `${timingKeyPrefix} in ` + getResolvedFilename(name, this.app.baseDir);
+  }
+
   private async triggerWillReady() {
     debug('registry willReady');
-    this.bootReady.start();
+    this.bootReady?.start();
     for (const boot of this[BOOTS]) {
       const willReady = boot.willReady && boot.willReady.bind(boot);
       if (willReady) {

@@ -1,5 +1,5 @@
 import cluster from 'cluster';
-import sendmessage from 'sendmessage';
+import sendMessage from 'sendmessage';
 import type Master from '../master';
 
 interface SendData<T extends unknown = {}> {
@@ -33,7 +33,7 @@ export default class Messenger {
     if (data.receiverPid) {
       if (data.receiverPid === String(process.pid)) {
         data.to = 'master';
-      } else if (data.receiverPid === String(this.master.agentWorker.pid)) {
+      } else if (data.receiverPid === String(this.master.agentWorker?.pid)) {
         data.to = 'agent';
       } else {
         data.to = 'app';
@@ -68,11 +68,13 @@ export default class Messenger {
   }
 
   sendToMaster(data: SendData) {
-    this.master.emit(data.action, data);
+    if (data.action) {
+      this.master.emit(data.action, data);
+    }
   }
 
   sentToParent(data: SendData) {
-    if (this.hasParent) {
+    if (this.hasParent && process.send) {
       process.send(data);
     }
   }
@@ -86,13 +88,13 @@ export default class Messenger {
       if (data.receiverPid && data.receiverPid !== String(worker.process.pid)) {
         continue;
       }
-      sendmessage(worker, data);
+      sendMessage(worker, data);
     }
   }
 
   sendToAgentWorker(data: SendData) {
     if (this.master.agentWorker) {
-      sendmessage(this.master.agentWorker, data);
+      sendMessage(this.master.agentWorker, data);
     }
   }
 }
